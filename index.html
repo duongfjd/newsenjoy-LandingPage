@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>News Enjoy — Đọc báo thông minh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============== DESIGN TOKENS ============== */
+  :root{
+    --paper:#F4F6F8;
+    --paper-2:#FFFFFF;
+    --ink:#0B1B2B;
+    --ink-soft:#48576C;
+    --ink-faint:#8493A6;
+    --rule:#CFD8E2;
+    --rule-strong:#0B1B2B;
+    --brand:#0A4F86;
+    --brand-2:#1C7EC4;
+    --breaking:#C0392B;
+    --gold:#B98B2A;
+    --font-display:'Roboto', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+    --max-w:1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  a{color:inherit; text-decoration:none;}
+  img,svg{display:block;}
+  ::selection{background:var(--brand); color:#fff;}
+
+  :focus-visible{
+    outline:3px solid var(--brand-2);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .wrap{max-width:var(--max-w); margin:0 auto; padding:0 28px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ============== MASTHEAD ============== */
+  .masthead{
+    padding:28px 0 0;
+    text-align:center;
+  }
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    letter-spacing:.14em;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+  }
+  .nameplate{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(48px, 9vw, 104px);
+    letter-spacing:-0.01em;
+    line-height:0.95;
+    margin:10px 0 6px;
+  }
+  .nameplate .accent{ color:var(--brand); font-style:italic; font-weight:700;}
+  .tagline{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(15px, 2.1vw, 19px);
+    color:var(--ink-soft);
+    margin:0 0 22px;
+  }
+
+  .rule-double{
+    border:none;
+    border-top:3px solid var(--rule-strong);
+    border-bottom:1px solid var(--rule-strong);
+    height:5px;
+    margin:0;
+  }
+
+  .dateline{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--ink-soft);
+    padding:10px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .dateline span b{color:var(--ink); font-weight:600;}
+
+  /* ============== TICKER ============== */
+  .ticker{
+    background:var(--ink);
+    color:#fff;
+    overflow:hidden;
+    white-space:nowrap;
+    position:relative;
+    border-bottom:1px solid var(--rule-strong);
+  }
+  .ticker-tag{
+    position:absolute; top:0; left:0; bottom:0;
+    background:var(--breaking);
+    display:flex; align-items:center;
+    padding:0 16px;
+    font-family:var(--font-mono);
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:.1em;
+    z-index:2;
+  }
+  .ticker-track{
+    display:inline-flex;
+    padding-left:140px;
+    animation:scroll-left 28s linear infinite;
+  }
+  .ticker-track span{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:.04em;
+    padding:11px 36px 11px 0;
+    color:#E7ECF2;
+  }
+  .ticker-track span::after{content:"•"; margin-left:36px; color:var(--brand-2);}
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ============== HERO ============== */
+  .hero{
+    padding:60px 0 50px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-bottom:1px solid var(--rule);
+  }
+  .hero h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(26px, 3.4vw, 38px);
+    line-height:1.25;
+    margin:0 0 20px;
+    max-width: 850px;
+  }
+  .hero p{
+    color:var(--ink-soft);
+    font-size:16px;
+    max-width:600px;
+    margin:0 0 32px;
+    line-height:1.6;
+  }
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; justify-content: center;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:14.5px;
+    padding:14px 24px;
+    border-radius:3px;
+    border:1.5px solid var(--ink);
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn-primary{ background:var(--brand); border-color:var(--brand); color:#fff;}
+  .btn-primary:hover{ background:#08406E; transform:translateY(-2px); box-shadow:0 8px 18px rgba(10,79,134,.28);}
+  .btn-ghost{ background:transparent; color:var(--ink);}
+  .btn-ghost:hover{ background:var(--ink); color:#fff; transform:translateY(-2px);}
+  .btn svg{width:16px; height:16px;}
+
+  /* ============== SECTION HEADERS ============== */
+  .section{padding:52px 0;}
+  .section + .section{border-top:1px solid var(--rule);}
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+    margin-bottom:28px; flex-wrap:wrap;
+  }
+  .section-head h3{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(22px,2.6vw,28px);
+    margin:0;
+  }
+  .section-head .num{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); letter-spacing:.08em;
+  }
+
+  /* ============== FEATURES ============== */
+  .feature-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+  }
+  .feature{
+    background:var(--paper-2);
+    padding:26px 22px;
+  }
+  .feature .icon{
+    width:34px; height:34px; color:var(--brand); margin-bottom:16px;
+  }
+  .feature h4{
+    font-family:var(--font-display); font-weight:700; font-size:16.5px; margin:0 0 8px;
+  }
+  .feature p{
+    color:var(--ink-soft); font-size:13.3px; margin:0; line-height:1.55;
+  }
+
+  /* ============== TECH STACK ============== */
+  .tech-strip{
+    display:flex; flex-wrap:wrap; gap:10px;
+  }
+  .tech-pill{
+    font-family:var(--font-mono);
+    font-size:12px;
+    padding:7px 13px;
+    border:1px solid var(--rule);
+    border-radius:20px;
+    color:var(--ink-soft);
+    background:var(--paper-2);
+  }
+
+  /* ============== EDITIONS / LINKS ============== */
+  .editions-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+  }
+  .edition-card{
+    background:var(--paper-2);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    padding:22px;
+    display:flex; flex-direction:column; gap:14px;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .edition-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 28px rgba(11,27,43,.10);
+    border-color:var(--brand);
+  }
+  .edition-top{display:flex; align-items:center; justify-content:space-between;}
+  .edition-icon{
+    width:40px; height:40px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(10,79,134,.08); color:var(--brand);
+  }
+  .edition-icon svg{width:20px; height:20px;}
+  .edition-arrow{
+    width:16px; height:16px; color:var(--ink-faint);
+    transition:transform .18s ease, color .18s ease;
+  }
+  .edition-card:hover .edition-arrow{ transform:translate(3px,-3px); color:var(--brand);}
+  .edition-kicker{
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.1em;
+    color:var(--ink-faint); text-transform:uppercase;
+  }
+  .edition-card h4{
+    font-family:var(--font-display); font-size:19px; font-weight:700; margin:2px 0 0;
+  }
+  .edition-card p{
+    color:var(--ink-soft); font-size:13px; margin:0; line-height:1.5;
+  }
+  .edition-card.featured{
+    background:var(--ink); color:#fff; border-color:var(--ink);
+  }
+  .edition-card.featured .edition-kicker{color:#9FB3C8;}
+  .edition-card.featured p{color:#C3CEDA;}
+  .edition-card.featured .edition-icon{ background:rgba(255,255,255,.12); color:#fff;}
+  .edition-card.featured .edition-arrow{color:#9FB3C8;}
+  .edition-card.featured:hover .edition-arrow{color:#fff;}
+
+  /* ============== FOOTER ============== */
+  footer{
+    border-top:3px solid var(--rule-strong);
+    padding:34px 0 40px;
+  }
+  .foot-row{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:20px;
+  }
+  .foot-mast{
+    font-family:var(--font-display); font-weight:900; font-size:22px;
+  }
+  .foot-meta{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--ink-soft); line-height:1.9;
+  }
+  .foot-meta b{color:var(--ink);}
+  .foot-links{display:flex; gap:18px; font-size:13px; flex-wrap:wrap;}
+  .foot-links a{color:var(--ink-soft); border-bottom:1px solid transparent;}
+  .foot-links a:hover{color:var(--brand); border-color:var(--brand);}
+
+  /* ============== RESPONSIVE ============== */
+  @media (max-width:880px){
+    .feature-grid{grid-template-columns:repeat(2,1fr);}
+    .editions-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 18px;}
+    .feature-grid{grid-template-columns:1fr;}
+    .editions-grid{grid-template-columns:1fr;}
+    .dateline{font-size:10.5px;}
+    .cta-row{flex-direction:column; align-items:stretch;}
+    .btn{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+  <header class="masthead wrap">
+    <div class="eyebrow">Đồ án tốt nghiệp · Trường Đại học Thủy Lợi · Khoa Công nghệ thông tin</div>
+    <h1 class="nameplate">NEWS <span class="accent">Enjoy</span></h1>
+    <p class="tagline">Đọc báo thông minh — AI tóm tắt, dịch thuật & đọc bằng giọng nói</p>
+  </header>
+  <div class="wrap"><hr class="rule-double"></div>
+  <div class="wrap">
+    <div class="dateline">
+      <span>Pipeline tự động hóa nội dung · cập nhật <b>mỗi 60 phút</b></span>
+      <span id="todayDate">Hà Nội, Việt Nam</span>
+    </div>
+  </div>
+
+  <div class="ticker" role="marquee" aria-label="Điểm nổi bật của ứng dụng">
+    <div class="ticker-tag">ĐIỂM NỔI BẬT</div>
+    <div class="ticker-track" id="tickerTrack">
+      <span>AI TÓM TẮT TIN TỨC TRONG 10 GIÂY</span>
+      <span>DỊCH THUẬT TỰ ĐỘNG SANG TIẾNG VIỆT</span>
+      <span>ĐỌC BÁO BẰNG GIỌNG NÓI — TEXT TO SPEECH</span>
+      <span>PIPELINE THU THẬP TIN 24/7 KHÔNG CẦN CON NGƯỜI</span>
+      <span>KIẾN TRÚC CLEAN ARCHITECTURE — FLUTTER &amp; SUPABASE</span>
+      <span>AI TÓM TẮT TIN TỨC TRONG 10 GIÂY</span>
+      <span>DỊCH THUẬT TỰ ĐỘNG SANG TIẾNG VIỆT</span>
+      <span>ĐỌC BÁO BẰNG GIỌNG NÓI — TEXT TO SPEECH</span>
+      <span>PIPELINE THU THẬP TIN 24/7 KHÔNG CẦN CON NGƯỜI</span>
+      <span>KIẾN TRÚC CLEAN ARCHITECTURE — FLUTTER &amp; SUPABASE</span>
+    </div>
+  </div>
+
+  <section class="wrap hero">
+    <h2>Mỗi bản tin quốc tế, gói gọn trong 50–70 từ tiếng Việt — đọc hoặc nghe trong vài giây.</h2>
+    <p>News Enjoy giải quyết rào cản ngôn ngữ và tình trạng quá tải thông tin bằng một đường ống nội dung tự động: thu thập, dịch thuật, tóm tắt và phân loại tin tức bằng AI — không cần biên tập viên con người.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" data-link="web" href="#" target="_blank" rel="noopener">
+        Mở bản Web
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+      <a class="btn btn-ghost" data-link="apk" href="#" target="_blank" rel="noopener">
+        Tải APK Android
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head">
+      <h3>Vì sao chọn News Enjoy</h3>
+      <span class="num">04 tính năng cốt lõi</span>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+        <h4>Pipeline tự động 24/7</h4>
+        <p>Tự động quét, bóc tách và xử lý tin tức theo lịch trình — không cần can thiệp thủ công.</p>
+      </div>
+      <div class="feature">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7M4 10h7M4 15h4"/><path d="M14 4h6v6h-6zM14 14h6v6h-6z"/></svg>
+        <h4>Dịch &amp; tóm tắt bằng AI</h4>
+        <p>Gemini đóng vai biên tập viên: dịch tự nhiên, tóm tắt 50–70 từ, giữ nguyên số liệu gốc.</p>
+      </div>
+      <div class="feature">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M8 9v6M16 9v6M4 11v2M20 11v2"/></svg>
+        <h4>Đọc báo bằng giọng nói</h4>
+        <p>Chuyển văn bản thành giọng đọc tiếng Việt, nghe rảnh tay khi lái xe hay làm việc nhà.</p>
+      </div>
+      <div class="feature">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>
+        <h4>Trải nghiệm mượt mà</h4>
+        <p>Flutter đa nền tảng, Clean Architecture, Riverpod — tốc độ phản hồi nhanh, giao diện hiện đại.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head">
+      <h3>Công nghệ sử dụng</h3>
+      <span class="num">Tech stack</span>
+    </div>
+    <div class="tech-strip">
+      <span class="tech-pill">Flutter &amp; Dart</span>
+      <span class="tech-pill">Riverpod</span>
+      <span class="tech-pill">Node.js + Express</span>
+      <span class="tech-pill">PostgreSQL</span>
+      <span class="tech-pill">Supabase</span>
+      <span class="tech-pill">Google Gemini API</span>
+      <span class="tech-pill">node-cron</span>
+      <span class="tech-pill">Clean Architecture</span>
+    </div>
+  </section>
+
+  <section class="section wrap" id="links">
+    <div class="section-head">
+      <h3>Các ấn bản &amp; liên kết</h3>
+      <span class="num">05 mục</span>
+    </div>
+    <div class="editions-grid">
+
+      <a class="edition-card featured" data-link="web" href="#" target="_blank" rel="noopener">
+        <div class="edition-top">
+          <div class="edition-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 4 5.7 4 9s-1.5 6.4-4 9c-2.5-2.6-4-5.7-4-9s1.5-6.4 4-9Z"/></svg>
+          </div>
+          <svg class="edition-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </div>
+        <span class="edition-kicker">Ấn bản 01</span>
+        <h4>Web App</h4>
+        <p>Trải nghiệm News Enjoy trực tiếp trên trình duyệt — không cần cài đặt.</p>
+      </a>
+
+      <a class="edition-card" data-link="apk" href="#" target="_blank" rel="noopener">
+        <div class="edition-top">
+          <div class="edition-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>
+          </div>
+          <svg class="edition-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </div>
+        <span class="edition-kicker">Ấn bản 02</span>
+        <h4>Android APK</h4>
+        <p>Tải file cài đặt trực tiếp để dùng thử bản di động đầy đủ tính năng.</p>
+      </a>
+
+      <a class="edition-card" data-link="admin" href="#" target="_blank" rel="noopener">
+        <div class="edition-top">
+          <div class="edition-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 14h4"/></svg>
+          </div>
+          <svg class="edition-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </div>
+        <span class="edition-kicker">Ấn bản 03</span>
+        <h4>Trang Quản trị</h4>
+        <p>Dashboard quản lý người dùng, bài viết và giám sát Pipeline cho Admin.</p>
+      </a>
+
+      <a class="edition-card" data-link="figma" href="#" target="_blank" rel="noopener">
+        <div class="edition-top">
+          <div class="edition-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2a3 3 0 0 0 0 6h3V2H9Z"/><path d="M12 8H9a3 3 0 1 0 3 3V8Z"/><path d="M12 2h3a3 3 0 1 1 0 6h-3V2Z"/><circle cx="15" cy="14" r="3"/><path d="M9 14a3 3 0 1 0 3 3v-3H9Z"/></svg>
+          </div>
+          <svg class="edition-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </div>
+        <span class="edition-kicker">Ấn bản 04</span>
+        <h4>Thiết kế Figma</h4>
+        <p>Toàn bộ wireframe, UI Kit và prototype thiết kế giao diện ứng dụng.</p>
+      </a>
+
+      <a class="edition-card" data-link="github" href="#" target="_blank" rel="noopener">
+        <div class="edition-top">
+          <div class="edition-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.64-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.03A9.6 9.6 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.3 2.75-1.03 2.75-1.03.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+          </div>
+          <svg class="edition-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </div>
+        <span class="edition-kicker">Ấn bản 05</span>
+        <h4>Mã nguồn GitHub</h4>
+        <p>Repository Flutter Client &amp; Node.js Backend — đầy đủ source code đồ án.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="wrap">
+    <div class="foot-row">
+      <div>
+        <div class="foot-mast">News <i style="font-family:var(--font-display); color:var(--brand);">Enjoy</i></div>
+        <div class="foot-meta">
+          <b>Phạm Hồng Dương</b> · MSSV 2251061754 · Lớp 64CNTT3<br>
+          GVHD: TS. Lý Anh Tuấn · Khoa CNTT, Đại học Thủy Lợi<br>
+          2251061754@e.tlu.edu.vn · 0375 516 703
+        </div>
+      </div>
+      <div class="foot-links">
+        <a data-link="web" href="#" target="_blank" rel="noopener">Web App</a>
+        <a data-link="apk" href="#" target="_blank" rel="noopener">APK</a>
+        <a data-link="admin" href="#" target="_blank" rel="noopener">Admin</a>
+        <a data-link="figma" href="#" target="_blank" rel="noopener">Figma</a>
+        <a data-link="github" href="#" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // =====================================================================
+  // Đã cập nhật toàn bộ link thật theo yêu cầu
+  // =====================================================================
+  const LINKS = {
+    web:    "https://newsenjoyweb.vercel.app/",
+    apk:    "https://github.com/duongfjd/BAOXEOM_APP/releases/download/v1.0.0/NewsEnjoy.apk",
+    admin:  "https://duongfjd.github.io/BAOXEOM_WEB_AD/",
+    figma:  "https://www.figma.com/design/LdhnLr5wwqyuCU6JwNSm3M/NewsEnjoy?node-id=0-1&t=BM4JbREyICHYK9Mc-1",
+    github: "https://github.com/duongfjd/BAOXEOM_APP.git"
+  };
+
+  document.querySelectorAll("[data-link]").forEach(el=>{
+    const key = el.getAttribute("data-link");
+    if (LINKS[key]) el.setAttribute("href", LINKS[key]);
+  });
+
+  // Ngày giờ truy cập (dateline)
+  const dateEl = document.getElementById("todayDate");
+  if (dateEl) {
+    const now = new Date();
+    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    dateEl.textContent = "Hà Nội · " + now.toLocaleDateString('vi-VN', opts);
+  }
+
+  // Tạm dừng ticker khi hover
+  const track = document.getElementById("tickerTrack");
+  const tickerWrap = document.querySelector(".ticker");
+  if (track && tickerWrap) {
+    tickerWrap.addEventListener("mouseenter", ()=> track.style.animationPlayState = "paused");
+    tickerWrap.addEventListener("mouseleave", ()=> track.style.animationPlayState = "running");
+  }
+</script>
+
+</body>
+</html>
